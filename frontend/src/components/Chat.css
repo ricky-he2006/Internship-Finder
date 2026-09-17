@@ -44,6 +44,57 @@
   opacity: 0.7;
 }
 
+.placeholder-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--chat-primary-light, #e0e7ff);
+  color: var(--chat-primary, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+/* -- Welcome suggestions -- */
+.welcome-suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--chat-white, #ffffff);
+  border: 1px solid var(--chat-border, #e2e8f0);
+  border-radius: 12px;
+  max-width: 480px;
+}
+
+@media (min-width: 640px) {
+  .welcome-suggestions {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.welcome-suggestion {
+  padding: 8px 12px;
+  border: 1px solid var(--chat-border, #e2e8f0);
+  border-radius: 8px;
+  background: var(--chat-bg, #f8fafc);
+  color: var(--chat-text, #1e293b);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.welcome-suggestion:hover {
+  background: var(--chat-primary-light, #e0e7ff);
+  border-color: var(--chat-primary, #6366f1);
+  transform: translateY(-1px);
+}
+
 /* -- Typing indicator -- */
 .typing-row {
   display: flex;
@@ -357,4 +408,9 @@
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Dark mode scrollbar override */
+[data-theme='dark'] .chat-messages::-webkit-scrollbar-thumb {
+  background: #334155;
 }

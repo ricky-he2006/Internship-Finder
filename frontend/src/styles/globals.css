@@ -30,6 +30,39 @@
   --sidebar-width: 280px;
 }
 
+/* ─── Dark Mode Tokens ──────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0b1120;
+    --color-white: #1e293b;
+    --color-text: #e2e8f0;
+    --color-text-muted: #94a3b8;
+    --color-border: #334155;
+    --color-primary: #818cf8;
+    --color-primary-hover: #6366f1;
+    --color-primary-light: rgba(129, 140, 248, 0.15);
+    --color-dark: #020617;
+    --color-dark-hover: #1e293b;
+    --color-success: #4ade80;
+    --color-warning: #fbbf24;
+    --color-error: #f87171;
+  }
+}
+
+/* ─── Dark Mode Tokens ──────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  --color-bg: #0b1120;
+  --color-white: #1e293b;
+  --color-text: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-border: #334155;
+  --color-primary-light: #312e81;
+  --color-dark: #020617;
+  --color-dark-hover: #1e293b;
+}
+
 /* ─── Reset ─────────────────────────────────────────────────────── */
 
 *,
@@ -807,6 +840,75 @@ a:hover {
 
 .spin {
   animation: spin 0.8s linear infinite;
+}
+
+/* ─── Dark Mode UI Overrides ────────────────────────────────────── */
+
+/* Sidebar & overlay */
+[data-theme="dark"] .sidebar-overlay {
+  backdrop-filter: brightness(0.3);
+}
+
+/* Chat messages scrollbar */
+[data-theme="dark"] .chat-messages::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* System message bubble */
+[data-theme="dark"] .message-row.system .message-bubble {
+  background: #422006;
+  border-color: #854d0e;
+  color: #fef3c7;
+}
+
+/* Match badges */
+[data-theme="dark"] .match-badge.high {
+  background: #14532d;
+  color: #bbf7d0;
+}
+
+[data-theme="dark"] .match-badge.medium {
+  background: #451a03;
+  color: #fef3c7;
+}
+
+[data-theme="dark"] .match-badge.low {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+/* Card skills — skill tags */
+[data-theme="dark"] .skill-tag {
+  background: #0f172a;
+}
+
+/* Upload zone */
+[data-theme="dark"] .upload-zone {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .upload-zone:hover,
+[data-theme="dark"] .upload-zone.drag-over {
+  background: rgba(99, 102, 241, 0.12);
+}
+
+/* Chat header & input bar */
+[data-theme="dark"] .chat-header {
+  background: #1e293b;
+}
+
+[data-theme="dark"] .chat-input-bar {
+  background: #1e293b;
+}
+
+/* Input wrapper */
+[data-theme="dark"] .input-wrapper {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .input-wrapper:focus-within {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 /* ─── Responsive: Tablet ────────────────────────────────────────── */

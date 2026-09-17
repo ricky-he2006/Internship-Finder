@@ -60,28 +60,30 @@ export default function Layout({ children, title = 'InternFinder', sessionStatus
     )
   }, [])
 
+  /** Persist skills and notify cross-tab listeners via custom event. */
+  const persistSkills = useCallback((skills) => {
+    try {
+      localStorage.setItem(`${STORAGE_KEY}_skills`, JSON.stringify(skills))
+      window.dispatchEvent(new CustomEvent('internfinder-skills-change'))
+    } catch {
+      // ignore storage quota errors
+    }
+  }, [])
+
   const handleSaveSkills = useCallback(
     (skills) => {
       setActiveSkills(skills)
-      try {
-        localStorage.setItem(`${STORAGE_KEY}_skills`, JSON.stringify(skills))
-      } catch {
-        // ignore storage quota errors
-      }
+      persistSkills(skills)
     },
-    [],
+    [persistSkills],
   )
 
   const handlePickerChange = useCallback(
     (selected) => {
       setActiveSkills(selected)
-      try {
-        localStorage.setItem(`${STORAGE_KEY}_skills`, JSON.stringify(selected))
-      } catch {
-        // ignore storage quota errors
-      }
+      persistSkills(selected)
     },
-    [],
+    [persistSkills],
   )
 
   const handleProfileUpdate = useCallback((newProfile) => {

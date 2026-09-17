@@ -1,36 +1,65 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Send } from 'lucide-react'
+import { Send, Sparkles } from 'lucide-react'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator'
+import { useChat } from '../hooks/useChat'
 import './Chat.css'
+
+/** Storage key matching the one used in Layout.jsx */
+const SKILLS_STORAGE_KEY = 'internfinder_profile_skills'
+
+/** Quick-start suggestions shown in the welcome screen */
+const SUGGESTIONS = [
+  'Find me a Python backend internship',
+  'Show React frontend opportunities',
+  'Machine learning roles for juniors',
+  'DevOps and cloud engineering gigs',
+]
 
 /**
  * Main chat interface for the Internship Finder app.
- * Renders a scrollable message list, a text input bar, and a send button.
+ * Uses the useChat hook for real API integration.
+ * Reads active skills from localStorage to match Layout's state.
  *
- * @param {object} props
- * @param {string | null} [props.sessionId=null] - The chat session ID (reserved for future session management).
- * @param {(sessionId: string) => void} [props.onSessionChange] - Callback when a new session is created or selected (reserved).
- * @param {object | null} [props.profile=null] - The user's profile object (reserved for future integration).
  * @returns {JSX.Element}
  */
-function Chat({ sessionId: _sessionId, onSessionChange: _onSessionChange, profile: _profile = null }) {
-  const [messages, setMessages] = useState([])
+export default function Chat() {
   const [inputValue, setInputValue] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
+  const { messages, isTyping, error, sendMessage } = useChat()
+
+  // Read active skills from the same storage that Layout uses
+  const [activeSkills, setActiveSkills] = useState(() => {
+    try {
+      const raw = localStorage.getItem(SKILLS_STORAGE_KEY)
+      return raw ? JSON.parse(raw) : []
+    } catch {
+      return []
+    }
+  })
+
+  // Re-sync skills when the sidebar picker or skill tagger changes
+  useEffect(() => {
+    const handleSkillsChange = () => {
+      try {
+        const raw = localStorage.getItem(SKILLS_STORAGE_KEY)
+        if (raw) setActiveSkills(JSON.parse(raw))
+      } catch {
+        // ignore
+      }
+    }
+    window.addEventListener('internfinder-skills-change', handleSkillsChange)
+    return () => window.removeEventListener('internfinder-skills-change', handleSkillsChange)
+  }, [])
+
   // Auto-scroll to bottom when messages change
-  const scrollToBottom = useCallback(() => {
+  useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages, isTyping, scrollToBottom])
+  }, [messages, isTyping])
 
   // Auto-resize textarea as content grows
   const adjustTextareaHeight = useCallback(() => {
@@ -49,23 +78,9 @@ function Chat({ sessionId: _sessionId, onSessionChange: _onSessionChange, profil
     const text = inputValue.trim()
     if (!text || isTyping) return
 
-    const userMessage = { role: 'user', content: text }
-    setMessages((prev) => [...prev, userMessage])
+    sendMessage(text, activeSkills)
     setInputValue('')
-    setIsTyping(true)
-
-    // Simulate a backend response after a short delay
-    // In production, this would be an API call
-    setTimeout(() => {
-      const assistantMessage = {
-        role: 'assistant',
-        content:
-          'Here is a sample internship that matches your profile. Check out the details below!',
-      }
-      setMessages((prev) => [...prev, assistantMessage])
-      setIsTyping(false)
-    }, 1500)
-  }, [inputValue, isTyping])
+  }, [inputValue, isTyping, sendMessage, activeSkills])
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -77,6 +92,14 @@ function Chat({ sessionId: _sessionId, onSessionChange: _onSessionChange, profil
     [handleSend],
   )
 
+  const handleSuggestionClick = useCallback(
+    (text) => {
+      setInputValue('')
+      sendMessage(text, activeSkills)
+    },
+    [sendMessage, activeSkills],
+  )
+
   return (
     <div className="chat-container">
       {/* Message list */}
@@ -84,12 +107,29 @@ function Chat({ sessionId: _sessionId, onSessionChange: _onSessionChange, profil
         {messages.length === 0 ? (
           <div className="chat-placeholder">
             <div>
+              <div className="placeholder-icon">
+                <Sparkles size={24} />
+              </div>
               <div className="placeholder-title">
-                Start a conversation about internships...
+                Find your next internship
               </div>
               <div className="placeholder-subtitle">
                 Ask me about opportunities, roles, or how to improve your chances.
               </div>
+            </div>
+
+            {/* Quick-start suggestions */}
+            <div className="welcome-suggestions">
+              {SUGGESTIONS.map((text) => (
+                <button
+                  key={text}
+                  className="welcome-suggestion"
+                  onClick={() => handleSuggestionClick(text)}
+                  type="button"
+                >
+                  {text}
+                </button>
+              ))}
             </div>
           </div>
         ) : (
@@ -107,27 +147,28 @@ function Chat({ sessionId: _sessionId, onSessionChange: _onSessionChange, profil
 
       {/* Input bar */}
       <div className="chat-input-bar">
-        <textarea
-          ref={textareaRef}
-          className="chat-textarea"
-          placeholder="Type a message..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={isTyping}
-          rows={1}
-        />
-        <button
-          className="chat-send-btn"
-          onClick={handleSend}
-          disabled={!inputValue.trim() || isTyping}
-          aria-label="Send message"
-        >
-          <Send size={20} />
-        </button>
+        <div className="input-wrapper">
+          <textarea
+            ref={textareaRef}
+            className="chat-textarea"
+            placeholder="Type a message..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isTyping}
+            rows={1}
+          />
+          <button
+            className="btn-send"
+            onClick={handleSend}
+            disabled={!inputValue.trim() || isTyping}
+            aria-label="Send message"
+            type="button"
+          >
+            <Send size={18} />
+          </button>
+        </div>
       </div>
     </div>
   )
 }
-
-export default Chat

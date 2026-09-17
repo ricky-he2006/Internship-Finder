@@ -4,17 +4,14 @@ import {
   File,
   Check,
   X as XIcon,
-  Paperclip,
 } from 'lucide-react'
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
 const ALLOWED_TYPES = [
   'application/pdf',
   'text/plain',
-  'text/x-markdown',
-  'text/rtf',
 ]
-const ALLOWED_EXTENSIONS = ['.pdf', '.txt', '.md', '.rtf']
+const ALLOWED_EXTENSIONS = ['.pdf', '.txt']
 
 /**
  * Drag-and-drop resume upload component with multiple states.
@@ -28,7 +25,6 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
   const [file, setFile] = useState(null)
   const [state, setState] = useState('idle') // idle | uploading | success | error
   const [error, setError] = useState(null)
-  const [profileSnippet, setProfileSnippet] = useState(null)
   const inputRef = useRef(null)
 
   const validateFile = useCallback((file) => {
@@ -36,13 +32,13 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
       return 'File is empty.'
     }
     if (file.size > MAX_SIZE) {
-      return `File too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max 5 MB.`
+      return 'File size must be under 5MB'
     }
     const ext = file.name.split('.').pop().toLowerCase()
     const isAllowedType = ALLOWED_TYPES.includes(file.type) ||
       ALLOWED_EXTENSIONS.includes(`.${ext}`)
     if (!isAllowedType) {
-      return `Unsupported file type "${ext}". Allowed: ${ALLOWED_EXTENSIONS.map((e) => e.slice(1)).join(', ')}.`
+      return 'Please upload a .pdf or .txt file'
     }
     return null
   }, [])
@@ -58,36 +54,7 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
     setError(null)
     setFile(selectedFile)
     setState('uploading')
-
-    // Simulate upload with a FileReader that reads the file (in production, this would call an API)
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const content = e.target.result
-      // Parse the file content to simulate profile extraction
-      const nameMatch = content.match(/(?:^|\n)\s*Name[:\s]*(.+)$/m)
-      const degreeMatch = content.match(/(?:^|\n)\s*Degree[:\s]*(.+)$/m)
-      const schoolMatch = content.match(/(?:^|\n)\s*School[:\s]*(.+)$/m)
-      const yearMatch = content.match(/(?:^|\n)\s*Year[:\s]*(.+)$/m)
-
-      const profile = {
-        name: nameMatch?.[1]?.trim() || 'Candidate',
-        degree: degreeMatch?.[1]?.trim() || 'Not specified',
-        school: schoolMatch?.[1]?.trim() || 'Not specified',
-        year: yearMatch?.[1]?.trim() || 'N/A',
-      }
-
-      setProfileSnippet(profile)
-      setState('success')
-
-      if (onUploadComplete) {
-        onUploadComplete(profile)
-      }
-    }
-    reader.onerror = () => {
-      setError('Failed to read the file.')
-      setState('error')
-    }
-    reader.readAsText(selectedFile)
+    onUploadComplete(selectedFile)
   }, [validateFile, onUploadComplete])
 
   const handleDrop = useCallback(
@@ -122,16 +89,9 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
   const handleReset = useCallback(() => {
     setFile(null)
     setError(null)
-    setProfileSnippet(null)
     setState('idle')
     if (inputRef.current) inputRef.current.value = ''
   }, [])
-
-  const formatSize = (bytes) => {
-    if (bytes < 1024) return `${bytes} B`
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-  }
 
   return (
     <div className="resume-upload">
@@ -164,7 +124,6 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
           <File size={24} className="resume-upload__file-icon" />
           <div className="resume-upload__info">
             <p className="resume-upload__filename">{file.name}</p>
-            <p className="resume-upload__filesize">{formatSize(file.size)}</p>
           </div>
           <div className="resume-upload__spinner" aria-label="Uploading">
             <svg className="resume-upload__spinner-svg" viewBox="0 0 24 24">
@@ -180,27 +139,6 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
               />
             </svg>
           </div>
-        </div>
-      )}
-
-      {state === 'success' && profileSnippet && (
-        <div className="resume-upload__success">
-          <Check size={24} className="resume-upload__success-icon" />
-          <p className="resume-upload__success-text">Resume uploaded!</p>
-          <div className="resume-upload__profile-summary">
-            <p>
-              <strong>{profileSnippet.name}</strong>
-            </p>
-            <p>{profileSnippet.degree} — {profileSnippet.school}</p>
-            <p>Year {profileSnippet.year}</p>
-          </div>
-          <button
-            className="resume-upload__change-btn"
-            onClick={handleReset}
-            type="button"
-          >
-            Upload another
-          </button>
         </div>
       )}
 
@@ -222,7 +160,7 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.txt,.md,.rtf,application/pdf,text/plain,text/x-markdown,text/rtf"
+        accept=".pdf,.txt,application/pdf,text/plain"
         style={{ display: 'none' }}
         onChange={handleInputChange}
       />

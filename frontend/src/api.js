@@ -1,9 +1,9 @@
 /**
  * API client for the InternFinder FastAPI backend.
- * Base URL: http://localhost:8000
+ * Uses Vite dev proxy (proxy config in vite.config.js).
  */
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = '';
 
 /**
  * Send a chat message to the backend agent.
@@ -73,7 +73,7 @@ export async function parseResume(file, sessionId) {
  */
 export async function healthCheck() {
   try {
-    const res = await fetch(BASE_URL);
+    const res = await fetch('/health');
     if (!res.ok) throw new Error(`Health check: ${res.status}`);
     return await res.json();
   } catch (error) {
