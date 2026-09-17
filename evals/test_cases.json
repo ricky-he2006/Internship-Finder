@@ -1,0 +1,54 @@
+{
+  "test_cases": [
+    {
+      "id": "happy-1",
+      "type": "happy_path",
+      "prompt": "Find summer 2025 software engineering internships in Ohio for freshmen",
+      "expect_contains": ["INTERN_CARD", "Ohio"],
+      "min_cards": 3
+    },
+    {
+      "id": "happy-2",
+      "type": "happy_path",
+      "prompt": "Remote data science internships paying more than $20/hr",
+      "expect_contains": ["INTERN_CARD"],
+      "min_cards": 2
+    },
+    {
+      "id": "happy-3",
+      "type": "happy_path",
+      "prompt": "Find cybersecurity internships open to sophomores with Python experience",
+      "expect_contains": ["INTERN_CARD", "Python"],
+      "min_cards": 2
+    },
+    {
+      "id": "edge-1",
+      "type": "edge_case",
+      "prompt": "Find internships in Antarctica",
+      "expect_not_contains": ["INTERN_CARD"],
+      "expect_contains": ["Antarctica"],
+      "note": "Acknowledge impossible location, ask for a real one"
+    },
+    {
+      "id": "edge-2",
+      "type": "edge_case",
+      "prompt": "Find internships paying $500 per hour",
+      "expect_not_contains": ["INTERN_CARD"],
+      "note": "Unrealistic pay — agent should clarify or redirect"
+    },
+    {
+      "id": "off-topic-1",
+      "type": "off_topic",
+      "prompt": "Can you help me write my CS231n homework?",
+      "expect_not_contains": ["INTERN_CARD"],
+      "note": "Must redirect to internship focus"
+    },
+    {
+      "id": "off-topic-2",
+      "type": "off_topic",
+      "prompt": "What is the capital of France?",
+      "expect_not_contains": ["INTERN_CARD"],
+      "note": "Completely off-topic — must redirect politely"
+    }
+  ]
+}

@@ -1,0 +1,767 @@
+/* ==========================================================================
+   InternFinder — Component Styles
+   Design tokens:
+     Primary:  #6366f1  (indigo)
+     Dark:     #0f172a  (sidebar)
+     Light:    #f8fafc  (page background)
+     White:    #ffffff
+     Text:     #1e293b
+     Muted:    #64748b
+     Green:    #22c55e
+     Radius:   12px cards, 8px small
+     Transition: 0.2s ease
+     Sidebar:  280px wide, 0.3s transition
+   ========================================================================== */
+
+/* ────────────── Sidebar ────────────── */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 280px;
+  height: 100%;
+  background-color: #0f172a;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
+}
+
+.sidebar--open {
+  transform: translateX(0);
+}
+
+.sidebar--closed {
+  transform: translateX(-280px);
+}
+
+/* Overlay for mobile mode */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease;
+}
+
+/* Header */
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar__logo-icon {
+  color: #6366f1;
+}
+
+.sidebar__title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.sidebar__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar__toggle:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Profile card */
+.sidebar__profile {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar__profile-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar__profile-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.sidebar__profile-icon--small {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.sidebar__profile-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.sidebar__profile-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.sidebar__profile-year {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.sidebar__no-profile {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0 0 8px;
+}
+
+.sidebar__upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px dashed rgba(99, 102, 241, 0.4);
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #818cf8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar__upload-btn:hover {
+  background-color: rgba(99, 102, 241, 0.16);
+  border-color: rgba(99, 102, 241, 0.7);
+}
+
+/* Skills section */
+.sidebar__skills {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.sidebar__section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
+}
+
+.sidebar__skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar__skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar__skill-chip:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar__skill-chip--active {
+  background-color: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.sidebar__skill-chip--active:hover {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+/* Save button */
+.sidebar__actions {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.sidebar__save-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #6366f1;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
+}
+
+.sidebar__save-btn:hover {
+  background-color: #4f46e5;
+}
+
+.sidebar__save-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sidebar__save-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.sidebar__save-saved {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sidebar__save-saved-icon {
+  flex-shrink: 0;
+}
+
+/* ────────────── SkillPicker ────────────── */
+
+.skill-picker {
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.skill-picker__hint {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.skill-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .skill-picker__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skill-picker__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  text-align: center;
+}
+
+.skill-picker__chip:hover {
+  transform: scale(1.03);
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.skill-picker__chip--selected {
+  background-color: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.skill-picker__chip--selected:hover {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.skill-picker__check {
+  flex-shrink: 0;
+}
+
+/* ────────────── ResumeUpload ────────────── */
+
+.resume-upload {
+  padding: 24px 20px;
+}
+
+.resume-upload__zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 24px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.resume-upload__zone:hover {
+  border-color: #6366f1;
+  background-color: rgba(99, 102, 241, 0.03);
+}
+
+.resume-upload__icon {
+  color: #94a3b8;
+}
+
+.resume-upload__zone:hover .resume-upload__icon {
+  color: #6366f1;
+}
+
+.resume-upload__text {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  text-align: center;
+}
+
+.resume-upload__browse {
+  color: #6366f1;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.resume-upload__formats {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.resume-upload__uploading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: #f8fafc;
+}
+
+.resume-upload__file-icon {
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+.resume-upload__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-upload__filename {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resume-upload__filesize {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0 0;
+}
+
+.resume-upload__spinner {
+  flex-shrink: 0;
+}
+
+.resume-upload__spinner-svg {
+  width: 24px;
+  height: 24px;
+  color: #6366f1;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.resume-upload__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 20px;
+  border: 1px solid #22c55e;
+  border-radius: 12px;
+  background-color: rgba(34, 197, 94, 0.04);
+}
+
+.resume-upload__success-icon {
+  color: #22c55e;
+}
+
+.resume-upload__success-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #22c55e;
+  margin: 0;
+}
+
+.resume-upload__profile-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.resume-upload__profile-summary p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.resume-upload__profile-summary strong {
+  color: #1e293b;
+}
+
+.resume-upload__change-btn {
+  padding: 6px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #64748b;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+  font-family: inherit;
+  align-self: center;
+}
+
+.resume-upload__change-btn:hover {
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.resume-upload__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid #ef4444;
+  border-radius: 12px;
+  background-color: rgba(239, 68, 68, 0.04);
+}
+
+.resume-upload__error-icon {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.resume-upload__error-text {
+  font-size: 14px;
+  color: #ef4444;
+  margin: 0;
+  text-align: center;
+}
+
+.resume-upload__try-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+.resume-upload__try-btn:hover {
+  background-color: #dc2626;
+}
+
+/* ────────────── Layout ────────────── */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.app-header__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.app-header__toggle:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.app-header__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.app-header__status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.app-header__status-icon {
+  color: #22c55e;
+}
+
+.app-header__status span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.app-header__profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  margin-left: auto;
+}
+
+.app-header__profile-icon {
+  color: #22c55e;
+}
+
+.app-header__profile-pill span {
+  font-size: 12px;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+/* Layout body */
+.app-layout__body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* Skill picker drawer */
+.app-main__picker-drawer {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.app-main__picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 0;
+}
+
+.app-main__picker-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 8px;
+}
+
+.app-main__picker-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.app-main__picker-close:hover {
+  background-color: #f1f5f9;
+}
+
+/* Upload overlay */
+.app-main__upload-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+.app-main__upload-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.app-main__upload-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.app-main__upload-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 16px;
+}
+
+.app-main__upload-close {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.app-main__upload-close:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* ────────────── Mobile adjustments ────────────── */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+  }
+
+  .sidebar--closed {
+    transform: translateX(-280px);
+  }
+
+  .app-main {
+    padding: 16px;
+  }
+
+  .skill-picker__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .app-header__title {
+    font-size: 16px;
+  }
+}

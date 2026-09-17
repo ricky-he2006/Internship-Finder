@@ -1,0 +1,24 @@
+# InternFinder backend dependencies
+# Install with: pip install -r requirements.txt
+
+# Server
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# NVIDIA NIM / OpenAI-compatible client
+openai==1.57.2
+
+# HTTP client (async Brave Search calls)
+httpx==0.28.1
+
+# PDF parsing
+pypdf==5.1.0
+
+# Env var loading
+python-dotenv==1.0.1
+
+# Pydantic v2 (FastAPI already pulls this in, pinned for clarity)
+pydantic==2.10.3
+
+# Multipart form uploads (needed for /parse-resume)
+python-multipart==0.0.20
