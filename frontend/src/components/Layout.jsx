@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Menu, X, CheckCircle } from 'lucide-react'
 import Sidebar from './Sidebar'
 import ResumeUpload from './ResumeUpload'
+import './Layout.css'
 
 const ALL_SKILLS = [
   'Python', 'JavaScript', 'TypeScript', 'Java', 'C++', 'Go', 'Rust',

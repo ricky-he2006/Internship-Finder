@@ -9,8 +9,8 @@ import { Bot } from 'lucide-react';
 export default function TypingIndicator() {
   return (
     <div className="typing-indicator">
-      <div style={{ width: 32, height: 32, borderRadius: 8, background: '#e0e7ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Bot size={16} color="#6366f1" />
+      <div className="typing-indicator__avatar">
+        <Bot size={16} />
       </div>
       <div className="typing-dots">
         <div className="typing-dot" />
