@@ -159,7 +159,7 @@ export default function Chat() {
             rows={1}
           />
           <button
-            className="btn-send"
+            className="chat-send-btn"
             onClick={handleSend}
             disabled={!inputValue.trim() || isTyping}
             aria-label="Send message"

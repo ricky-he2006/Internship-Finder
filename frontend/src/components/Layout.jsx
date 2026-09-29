@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Menu, X, CheckCircle } from 'lucide-react'
 import Sidebar from './Sidebar'
-import SkillPicker from './SkillPicker'
 import ResumeUpload from './ResumeUpload'
 
 const ALL_SKILLS = [
@@ -28,7 +27,7 @@ export default function Layout({ children, title = 'InternFinder', sessionStatus
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [profile, setProfile] = useState(() => loadProfile())
   const [activeSkills, setActiveSkills] = useState(() => loadSkills())
-  const [pickerOpen, setPickerOpen] = useState(false)
+  const [uploadOpen, setUploadOpen] = useState(false)
 
   function loadProfile() {
     try {
@@ -74,14 +73,6 @@ export default function Layout({ children, title = 'InternFinder', sessionStatus
     (skills) => {
       setActiveSkills(skills)
       persistSkills(skills)
-    },
-    [persistSkills],
-  )
-
-  const handlePickerChange = useCallback(
-    (selected) => {
-      setActiveSkills(selected)
-      persistSkills(selected)
     },
     [persistSkills],
   )
@@ -147,36 +138,24 @@ export default function Layout({ children, title = 'InternFinder', sessionStatus
           activeSkills={activeSkills}
           onSkillToggle={handleSkillToggle}
           onSaveSkills={handleSaveSkills}
-          onResumeUpload={() => setPickerOpen(true)}
+          onResumeUpload={() => setUploadOpen(true)}
         />
 
         <main className="app-main">
-          {/* Skill picker drawer — shown when user has no profile yet */}
-          {!profile && pickerOpen && (
-            <div className="app-main__picker-drawer">
-              <div className="app-main__picker-header">
-                <h2 className="app-main__picker-title">Choose your skills</h2>
-                <button
-                  className="app-main__picker-close"
-                  onClick={() => setPickerOpen(false)}
-                  type="button"
-                  aria-label="Close skill picker"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-              <SkillPicker
-                skills={ALL_SKILLS}
-                selected={activeSkills}
-                onChange={handlePickerChange}
-              />
-            </div>
-          )}
-
           {/* Upload modal shown when user clicks "Upload resume" */}
-          {pickerOpen && !profile && (
-            <div className="app-main__upload-overlay" onClick={() => setPickerOpen(false)}>
-              <div className="app-main__upload-card" onClick={(e) => e.stopPropagation()}>
+          {uploadOpen && (
+            <div
+              className="app-main__upload-overlay"
+              onClick={() => setUploadOpen(false)}
+              role="presentation"
+            >
+              <div
+                className="app-main__upload-card"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Upload your resume"
+              >
                 <h2 className="app-main__upload-title">Upload your resume</h2>
                 <p className="app-main__upload-subtitle">
                   We'll extract your profile automatically.
@@ -188,10 +167,10 @@ export default function Layout({ children, title = 'InternFinder', sessionStatus
                 />
                 <button
                   className="app-main__upload-close"
-                  onClick={() => setPickerOpen(false)}
+                  onClick={() => setUploadOpen(false)}
                   type="button"
                 >
-                  Cancel
+                  {profile ? 'Done' : 'Cancel'}
                 </button>
               </div>
             </div>

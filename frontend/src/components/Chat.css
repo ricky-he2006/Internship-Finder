@@ -145,35 +145,45 @@
 /* -- Input bar -- */
 .chat-input-bar {
   display: flex;
-  gap: 8px;
+  justify-content: center;
   padding: 12px 16px 16px;
   border-top: 1px solid var(--chat-border, #e2e8f0);
   background: var(--chat-bg, #f8fafc);
 }
 
+.input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 1;
+  max-width: 640px;
+  background: var(--chat-white, #ffffff);
+  border: 1px solid var(--chat-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 6px 6px 6px 14px;
+  transition: border-color 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--chat-primary, #6366f1);
+}
+
 .chat-textarea {
   flex: 1;
   resize: none;
-  padding: 10px 14px;
-  border: 1px solid var(--chat-border, #e2e8f0);
-  border-radius: 8px;
+  padding: 8px 0;
+  border: none;
   font-family: inherit;
   font-size: 14px;
   line-height: 1.5;
   color: var(--chat-text, #1e293b);
-  background: var(--chat-white, #ffffff);
+  background: transparent;
   outline: none;
-  transition: border-color 0.2s ease;
   min-height: 44px;
   max-height: 120px;
 }
 
-.chat-textarea:focus {
-  border-color: var(--chat-primary, #6366f1);
-}
-
 .chat-textarea:disabled {
-  background: var(--chat-bg, #f8fafc);
   color: var(--chat-muted, #64748b);
   cursor: not-allowed;
 }
@@ -186,8 +196,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 8px;
   background-color: var(--chat-primary, #6366f1);

@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
+import { parseResume } from '../api'
 import {
   Upload,
   File,
@@ -25,6 +26,7 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
   const [file, setFile] = useState(null)
   const [state, setState] = useState('idle') // idle | uploading | success | error
   const [error, setError] = useState(null)
+  const [parsedProfile, setParsedProfile] = useState(null)
   const inputRef = useRef(null)
 
   const validateFile = useCallback((file) => {
@@ -43,7 +45,7 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
     return null
   }, [])
 
-  const handleFileSelect = useCallback((selectedFile) => {
+  const handleFileSelect = useCallback(async (selectedFile) => {
     const validationError = validateFile(selectedFile)
     if (validationError) {
       setError(validationError)
@@ -54,8 +56,17 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
     setError(null)
     setFile(selectedFile)
     setState('uploading')
-    onUploadComplete(selectedFile)
-  }, [validateFile, onUploadComplete])
+
+    try {
+      const response = await parseResume(selectedFile, sessionId)
+      setParsedProfile(response.profile)
+      setState('success')
+      onUploadComplete(response.profile)
+    } catch (err) {
+      setError(err.message || 'Failed to parse resume. Please try again.')
+      setState('error')
+    }
+  }, [validateFile, onUploadComplete, sessionId])
 
   const handleDrop = useCallback(
     (e) => {
@@ -89,6 +100,7 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
   const handleReset = useCallback(() => {
     setFile(null)
     setError(null)
+    setParsedProfile(null)
     setState('idle')
     if (inputRef.current) inputRef.current.value = ''
   }, [])
@@ -152,6 +164,25 @@ export default function ResumeUpload({ sessionId, onUploadComplete, loading }) {
             type="button"
           >
             Try again
+          </button>
+        </div>
+      )}
+
+      {state === 'success' && parsedProfile && (
+        <div className="resume-upload__success">
+          <Check size={32} className="resume-upload__success-icon" />
+          <p className="resume-upload__success-text">Profile loaded!</p>
+          <div className="resume-upload__profile-summary">
+            <p><strong>Name:</strong> {parsedProfile.name || 'Not specified'}</p>
+            <p><strong>Degree:</strong> {parsedProfile.degree || 'Not specified'}</p>
+            <p><strong>School:</strong> {parsedProfile.school || 'Not specified'}</p>
+          </div>
+          <button
+            className="resume-upload__change-btn"
+            onClick={handleReset}
+            type="button"
+          >
+            Upload different file
           </button>
         </div>
       )}

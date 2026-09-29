@@ -72,6 +72,7 @@ class ParseResumeResponse(BaseModel):
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.get("/", tags=["Health"])
+@app.get("/health", tags=["Health"])
 def health():
     return {
         "status": "ok",

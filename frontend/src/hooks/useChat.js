@@ -56,18 +56,6 @@ export function useChat() {
   }, [sessionId, isTyping]);
 
   /**
-   * Send a lightweight update with modified active skills (no full chat).
-   * @param {string[]} activeSkills
-   */
-  const updateProfile = useCallback(async (activeSkills) => {
-    try {
-      await apiChat('', sessionId, activeSkills);
-    } catch (err) {
-      console.error('[useChat] updateProfile failed:', err.message);
-    }
-  }, [sessionId]);
-
-  /**
    * Reset conversation to empty state.
    */
   const reset = useCallback(() => {
@@ -88,5 +76,5 @@ export function useChat() {
     }
   }, []);
 
-  return { messages, sessionId, isTyping, error, sendMessage, reset, updateProfile, scrollRef };
+  return { messages, sessionId, isTyping, error, sendMessage, reset, scrollRef };
 }
